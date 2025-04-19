@@ -7,14 +7,14 @@ const createPost = async (req, res) => {
   try {
     const { content, image } = req.body;
 
-    if (!content && !image) {
+    if (!content ) {
       return res.status(400).json({ message: 'Content or image is required' });
     }
 
     const newPost = new Post({
       postedBy: req.user,  // User info from middleware
       content,
-      image,
+      
     });
 
     await newPost.save();
@@ -45,12 +45,12 @@ const getSinglePost = async (req, res) => {
     const { id } = req.params;
 
     const post = await Post.findById(id)
-      .populate('postedBy', 'username profilePicture')  // Populate user details
+      .populate('postedBy', 'username')  // Populate user details
       .populate({
         path: 'comments',
         populate: {
           path: 'user',  // Populate the user info in each comment
-          select: 'username profilePicture',
+          select: 'username',
         }
       });
 
@@ -74,7 +74,7 @@ const getComments = async (req, res) => {
         path: 'comments',
         populate: {
           path: 'user',
-          select: 'username profilePicture',
+          select: 'username',
         },
       });
 
@@ -108,7 +108,7 @@ const comment = async (req, res) => {
       id,
       { $push: { comments: newComment } },
       { new: true }  // Return updated post
-    ).populate('comments.user', 'username profilePicture');
+    ).populate('comments.user', 'username');
 
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });

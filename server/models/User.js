@@ -18,9 +18,6 @@ const userSchema = mongoose.Schema({
     bio: {
         type:String
     },
-    profilePicture: {
-        type: String
-    },
     followers: [
         {
           type: mongoose.Schema.Types.ObjectId,

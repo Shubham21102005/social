@@ -17,12 +17,12 @@ const getUserProfile = async (req, res) => {
 // Update user profile
 const updateUserProfile = async (req, res) => {
   try {
-    const { username, email, profilePicture } = req.body;
+    const { username, email } = req.body;
 
     // Find the user and update their profile details
     const updatedUser = await User.findByIdAndUpdate(
       req.user,
-      { username, email, profilePicture },
+      { username, email },
       { new: true } // Return the updated user
     ).select('-password'); // Don't return the password
 
